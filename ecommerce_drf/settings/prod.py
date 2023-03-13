@@ -1,4 +1,5 @@
 from .base import *
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -6,4 +7,4 @@ from .base import *
 #     }
 # }
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*", "192.168.33.94"]
