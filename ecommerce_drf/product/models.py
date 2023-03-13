@@ -1,9 +1,13 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
+from rest_framework import permissions
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # Create your models here.
 
 # lets us explicitly set upload path and filename
+
+
 def upload_to(instance, filename):
     print(f"\n \n \n \n***\n{instance}\n\n")
     print(f"\n \n \n \n***\n{filename}\n\n")
@@ -12,7 +16,8 @@ def upload_to(instance, filename):
 
 class Categories(MPTTModel):
     name = models.CharField(max_length=100)
-    parent = TreeForeignKey("self", on_delete=models.PROTECT, null=True, blank=True)
+    parent = TreeForeignKey(
+        "self", on_delete=models.PROTECT, null=True, blank=True)
     image_url = models.ImageField(upload_to=upload_to, blank=True, null=False)
 
     class MPTTMeta:
@@ -25,6 +30,12 @@ class Categories(MPTTModel):
 class Brand(models.Model):
     name = models.CharField(max_length=100)
     image_url = models.ImageField(upload_to=upload_to, blank=True, null=True)
+    parser_classes = (MultiPartParser, FormParser)
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user)
 
     def __str__(self):
         return self.name

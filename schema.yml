@@ -33,7 +33,7 @@ paths:
   /api/products/:
     get:
       operationId: products_retrieve
-      description: A simple Viewset for viewing all categories
+      description: A simple Viewset for viewing all Product
       tags:
       - products
       security:
