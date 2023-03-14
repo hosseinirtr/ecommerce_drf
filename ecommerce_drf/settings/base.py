@@ -130,11 +130,12 @@ REST_FRAMEWORK = {
     # YOUR SETTINGS
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
-# Actual directory user files go to
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "mediafiles")
-
 # URL used to access the media
 MEDIA_URL = "../media/"
+
+# Actual directory user files go to
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), MEDIA_URL)
+
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Your Project API",
