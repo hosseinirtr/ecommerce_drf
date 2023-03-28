@@ -1,13 +1,15 @@
 from rest_framework import serializers
 
-from .models import Brand, Categories, Product
+from .models import Brand, Categories, Product, ProductLine
 
 
 class CategoriesSerializer(serializers.ModelSerializer):
+    Category_name = serializers.CharField
+
     class Meta:
         model = Categories
         # fields = "__all__"
-        fields = ["name", "image_url", "title"]
+        fields = ["name", "image_url", "slug"]
 
 
 class BrandSerializer(serializers.ModelSerializer):
@@ -16,13 +18,31 @@ class BrandSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Brand
-        fields = "__all__"
+        exclude = ["id"]
+
+
+class ProductLineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductLine
+        exclude = ["id"]
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    brand = BrandSerializer()
-    categories = CategoriesSerializer()
+    # Note: mapping data
+    brand_name = serializers.CharField(source="brand.name")
+    # todo: return list of category because it's categories :)
+    categories_name = serializers.CharField(source="categories.name")
+    # categories = CategoriesSerializer()
+    product_line = ProductLineSerializer(many=True)
 
     class Meta:
         model = Product
-        fields = "__all__"
+        # exclude = "id"
+        fields = (
+            "name",
+            "slug",
+            "description",
+            "brand_name",
+            "categories_name",
+            "product_line",
+        )
