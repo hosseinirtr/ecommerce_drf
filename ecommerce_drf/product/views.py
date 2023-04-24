@@ -55,7 +55,7 @@ class ProductViewSet(viewsets.ViewSet):
     """
 
     serializer_class = ProductSerializer
-    queryset = Product.objects.all()
+    queryset = Product.objects.isactive()
     lookup_field = "slug"
 
     def retrieve(self, req, slug=None):
