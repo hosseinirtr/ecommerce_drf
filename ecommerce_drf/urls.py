@@ -13,8 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 
 from ecommerce_drf.product import views
@@ -22,10 +25,14 @@ from ecommerce_drf.product import views
 from .views import home
 
 router = DefaultRouter()
-router.register(r"category", views.CategoryViewSet)
+router.register(r"categories", views.CategoryViewSet)
+router.register(r"brands", views.BrandViewSet)
+router.register(r"products", views.ProductViewSet)
 
 urlpatterns = [
     path("", home),
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
-]
+    path("api/schema", SpectacularAPIView.as_view(), name="schema"),
+    path("api/schema/docs", SpectacularSwaggerView.as_view(url_name="schema")),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
