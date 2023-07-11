@@ -1,18 +1,11 @@
-from django.db import connection
 from drf_spectacular.utils import extend_schema
-from pygments import highlight
-from pygments.formatters import TerminalFormatter
-from pygments.lexers import SqlLexer
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
-from sqlparse import format
 
 from .models import Brand, Categories, Product
 from .serializers import BrandSerializer, CategoriesSerializer, ProductSerializer
-
-# Create your views here.
 
 
 class handle_404(APIException):
